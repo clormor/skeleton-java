@@ -62,6 +62,7 @@ A skeleton project used as a template for creating java libraries.
         git remote set-url origin git@github.com:<repository>/<my-new-project>
 
 7. Add your new project in [CircleCI](https://circleci.com/) and [CodeClimate](https://codeclimate.com)
+  * You may need to configure the default branch in CodeClimate to `develop` under *Repo Settings*.
 
 8. Grab the Test Reporter Id from CodeClimate and update the value of `CC_TEST_REPORTER_ID` in `circle.yml`
 
