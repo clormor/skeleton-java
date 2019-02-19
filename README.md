@@ -71,7 +71,28 @@ A skeleton project used as a template for creating java libraries.
 
 If you wish to use the [immutables.io](https://immutables.github.io/), you can configure your project and your IDE to automatically generate the source as part of a build.
 
+1. Un-comment the following line from `build.gradle` to enable the [org.inferred.processors](https://plugins.gradle.org/plugin/org.inferred.processors) plugin
+	
+		plugins {
+			...
+		//    id 'org.inferred.processors' version '2.1.0'
+			...
+		}
 
+2. Un-comment the following lines to add the relevant dependencies to your project's build
+
+		dependencies {
+			...
+		//    implementation "org.immutables:value-annotations:$immutablesVersion"
+		//    annotationProcessor "org.immutables:value:$immutablesVersion"
+			...
+		}
+		
+3. Re-build your project and your IDE's project files
+
+		./gradlew clean cleanIdea idea build
+
+4. Commit and push your changes
 
 ## CircleCI Integration
 
