@@ -13,6 +13,11 @@ jobs:
     steps:
       - checkout
 
+      # allows circle to sign artifacts
+      - run:
+          name: Generating signing key
+          command: scripts/generate-signing-key.sh
+
       # download the code climate CLI
       - run:
           name: Setting up CodeClimate test-reporter
