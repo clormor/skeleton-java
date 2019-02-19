@@ -126,9 +126,18 @@ CircleCI must be configured in order to upload reports to CodeClimate (See [Circ
 
 3. Grab the Test Reporter Id from CodeClimate and set this as the value of `CC_TEST_REPORTER_ID` in `circle.yml`
 
-4. Commit and push your changes
+4. Un-comment the following section in the `build` build defined in  `circle.yml` to trigger uploads to CodeClimate
 
-All CircleCI builds should now upload coverage reports to CodeClimate. This is configured in `circle.yml`
+        #- run:
+        #    name: Uploading coverage report to CodeClimate
+        #    command: |
+        #      export JACOCO_SOURCE_PATH=src/main/java
+        #      ./cc-test-reporter format-coverage build/reports/jacoco/test/jacocoTestReport.xml -t jacoco
+        #      ./cc-test-reporter upload-coverage
+
+5. Commit and push your changes
+
+All CircleCI builds should now upload coverage reports to CodeClimate.
 
 ## Publishing to nexus
 
