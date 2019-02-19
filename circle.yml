@@ -14,8 +14,8 @@ jobs:
       - checkout
 
       - run:
-          name: Generate signing secret
-          command: scripts/generate-signing-secret.sh
+          name: Generate signing key
+          command: scripts/generate-signing-key.sh
 
       # download the code climate CLI
       - run:
