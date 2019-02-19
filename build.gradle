@@ -46,7 +46,7 @@ dependencies {
     compileOnly "com.google.code.findbugs:annotations:$findbugsVersion"
     implementation "org.immutables:value-annotations:$immutablesVersion"
     annotationProcessor "org.immutables:value:$immutablesVersion"
-	testCompile "junit:junit:$junitVersion"
+    testCompile "junit:junit:$junitVersion"
 }
 
 idea {
