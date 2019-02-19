@@ -90,7 +90,7 @@ Releases are generated using the [Gradle Sonatype Nexus plugin](https://github.c
 
 By default, this project is configured to publish releases to the `release` branch. The first time you wish to perform a release, you may need to create the `release` branch, if it does not already exist.
 
-        git branch release
+    git branch release
 
 You should now be able to perform a release by running `./gradlew release` and following the on-screen prompts.
 
