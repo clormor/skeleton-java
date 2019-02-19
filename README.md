@@ -46,33 +46,39 @@ A skeleton project used as a template for creating java libraries.
 
 4. Update the `group` in `build.gradle` to your `groupId` (see step 1)
 
-5. Create a new repository and point `origin` to your new repo
-
-        git remote set-url origin git@github.com:<repository>/<my-new-project>
-
-6. Set the following environment variables on your local machine e.g. in `~/.bashrc`:
+5. Set the following environment variables on your local machine e.g. in `~/.bashrc`:
   * `NEXUS_USER` : Your sonatype nexus username (see step 1)
   * `NEXUS_PASSWORD` : Your sonatype nexus password (see step 1)
   * `NEXUS_KEY_ID` : Your public key for signing artifacts
   * `NEXUS_KEY_PASSWORD` : The password you used to encrypt your public key
   * `NEXUS_KEY_FILE` : `~/.gnupg/secring.gpg`
 
-7. Commit and push your changes to `develop`
+6. As a sanity check, confirm that your project builds successfully on your local machine
 
-        git commit -am "initial commit initiated from https://github.com/clormor/skeleton-java"
-        git push --set-upstream origin develop
+        ./gradlew clean build
 
-8. Add your new project as projects in [CircleCI](https://circleci.com/) and [CodeClimate](https://codeclimate.com)
+6. Create a new repository in [GitHub](https://github.com) and point update the `origin` remote
 
-9. To sign artifacts in circle, copy your base64-encoded secret key to your OS' clipboard. For example, on Mac:
+        git remote set-url origin git@github.com:<repository>/<my-new-project>
+
+7. Add your new project in [CircleCI](https://circleci.com/) and [CodeClimate](https://codeclimate.com)
+
+8. Grab the Test Reporter Id from CodeClimate and update the value of `CC_TEST_REPORTER_ID` in `circle.yml`
+
+9. To sign artifacts in circle, copy your base64-encoded secret key to your clipboard. For example, on Mac:
 
         base64 -i ~/.gnupg/secring.gpg | pbcopy
 
 10. Set the following environment variables in CircleCI:
-  * `NEXUS_USER` : (see step 6)
-  * `NEXUS_PASSWORD` : (see step 6)
-  * `NEXUS_KEY_ID` : (see step 6)
-  * `NEXUS_KEY_PASSWORD` : (see step 6)
-  * `NEXUS_KEY_FILE` : `secring.gpg` (note this is not the same as the value you set in step 6)
+  * `NEXUS_USER` : (see step 5)
+  * `NEXUS_PASSWORD` : (see step 5)
+  * `NEXUS_KEY_ID` : (see step 5)
+  * `NEXUS_KEY_PASSWORD` : (see step 5)
+  * `NEXUS_KEY_FILE` : `secring.gpg` (note this is not the same as the value you set in step 5)
   * `NEXUS_KEY_BASE64` : Your base64-encoded secret key (the output from step 9)
+
+11. Commit and push your changes to `develop`
+
+        git commit -am "initial commit initiated from https://github.com/clormor/skeleton-java"
+        git push --set-upstream origin develop
 
