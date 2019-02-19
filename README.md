@@ -28,8 +28,8 @@ A skeleton project used as a template for creating java libraries.
   * Build all commits of the project
   * Upload jUnit test results and all report artifacts
   * Upload code coverage analysis to [CodeClimate](https://codeclimate.com)
-  * Publish commits on `develop` as snapshots to [maven central sanpshots repository](https://oss.sonatype.org/content/repositories/snapshots/)
-  * Publish commits tagged with a version as staged releases to [maven central staging repository](https://oss.sonatype.org/service/local/staging/deploy/maven2)
+  * Publish commits on `develop` as snapshots to the [maven central sanpshots repository](https://oss.sonatype.org/content/repositories/snapshots/)
+  * Publish commits tagged with a version as staged releases to the [maven central staging repository](https://oss.sonatype.org/service/local/staging/deploy/maven2)
   * Automatically close and release staged releases to [maven central](https://oss.sonatype.org/service/local/staging/deploy/maven2) - no need to log into the nexus UI
 * `README` pre-formatted with some handy [shields](https://shields.io)
 
@@ -44,33 +44,35 @@ A skeleton project used as a template for creating java libraries.
 
         ./scripts/rename-project.sh skeleton-java <my-new-project>
 
-4. Create a new repository and point `origin` to your new repo
+4. Update the `group` in `build.gradle` to your `groupId` (see step 1)
+
+5. Create a new repository and point `origin` to your new repo
 
         git remote set-url origin git@github.com:<repository>/<my-new-project>
 
-5. Set the following environment variables on your local machine e.g. in `~/.bashrc`:
+6. Set the following environment variables on your local machine e.g. in `~/.bashrc`:
   * `NEXUS_USER` : Your sonatype nexus username (see step 1)
   * `NEXUS_PASSWORD` : Your sonatype nexus password (see step 1)
   * `NEXUS_KEY_ID` : Your public key for signing artifacts
   * `NEXUS_KEY_PASSWORD` : The password you used to encrypt your public key
   * `NEXUS_KEY_FILE` : `~/.gnupg/secring.gpg`
 
-6. Commit and push your changes to the develop branch
+7. Commit and push your changes to `develop`
 
-        git commit -am "initial commit"
+        git commit -am "initial commit initiated from https://github.com/clormor/skeleton-java"
         git push --set-upstream origin develop
 
-7. Add your new project as projects in [CircleCI](https://circleci.com/) and [CodeClimate](https://codeclimate.com)
+8. Add your new project as projects in [CircleCI](https://circleci.com/) and [CodeClimate](https://codeclimate.com)
 
-8. To sign artifacts in circle, copy your base64-encoded secret key to your OS' clipboard. For example, on OSX:
+9. To sign artifacts in circle, copy your base64-encoded secret key to your OS' clipboard. For example, on Mac:
 
         base64 -i ~/.gnupg/secring.gpg | pbcopy
 
-9. Set the following environment variables in CircleCI:
-  * `NEXUS_USER` : (see step 5)
-  * `NEXUS_PASSWORD` : (see step 5)
-  * `NEXUS_KEY_ID` : (see step 5)
-  * `NEXUS_KEY_PASSWORD` : (see step 5)
-  * `NEXUS_KEY_FILE` : `secring.gpg` (note this is not the same as the value you set in step 5)
-  * `NEXUS_KEY_BASE64` : Your base64-encoded secret key (the output from step 8)
+10. Set the following environment variables in CircleCI:
+  * `NEXUS_USER` : (see step 6)
+  * `NEXUS_PASSWORD` : (see step 6)
+  * `NEXUS_KEY_ID` : (see step 6)
+  * `NEXUS_KEY_PASSWORD` : (see step 6)
+  * `NEXUS_KEY_FILE` : `secring.gpg` (note this is not the same as the value you set in step 6)
+  * `NEXUS_KEY_BASE64` : Your base64-encoded secret key (the output from step 9)
 
