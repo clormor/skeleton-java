@@ -48,29 +48,29 @@ A skeleton project used as a template for creating java libraries.
 
         git remote set-url origin git@github.com:<repository>/<my-new-project>
 
-5. Add your new project as projects in [CircleCI](https://circleci.com/) and [CodeClimate](https://codeclimate.com)
-
-6. To sign artifacts in circle, copy your base64-encoded secret key to your OS' clipboard. For example, on OSX:
-
-        base64 -i ~/.gnupg/secring.gpg | pbcopy
-
-7. Set the following environment variables on your local machine e.g. in `~/.bashrc`:
+5. Set the following environment variables on your local machine e.g. in `~/.bashrc`:
   * `NEXUS_USER` : Your sonatype nexus username (see step 1)
   * `NEXUS_PASSWORD` : Your sonatype nexus password (see step 1)
   * `NEXUS_KEY_ID` : Your public key for signing artifacts
   * `NEXUS_KEY_PASSWORD` : The password you used to encrypt your public key
   * `NEXUS_KEY_FILE` : `~/.gnupg/secring.gpg`
 
-8. Set the following environment variables in CircleCI:
-  * `NEXUS_USER` : (see step 7)
-  * `NEXUS_PASSWORD` : (see step 7)
-  * `NEXUS_KEY_ID` : (see step 7)
-  * `NEXUS_KEY_PASSWORD` : (see step 7)
-  * `NEXUS_KEY_FILE` : `secring.gpg` (note this is not the same as the value you set in step 7)
-  * `NEXUS_KEY_BASE64` : Your base64-encoded secret key (the output from step 6)
-
-8. Commit and push your changes to the develop branch
+6. Commit and push your changes to the develop branch
 
         git commit -am "initial commit"
         git push --set-upstream origin develop
+
+7. Add your new project as projects in [CircleCI](https://circleci.com/) and [CodeClimate](https://codeclimate.com)
+
+8. To sign artifacts in circle, copy your base64-encoded secret key to your OS' clipboard. For example, on OSX:
+
+        base64 -i ~/.gnupg/secring.gpg | pbcopy
+
+9. Set the following environment variables in CircleCI:
+  * `NEXUS_USER` : (see step 5)
+  * `NEXUS_PASSWORD` : (see step 5)
+  * `NEXUS_KEY_ID` : (see step 5)
+  * `NEXUS_KEY_PASSWORD` : (see step 5)
+  * `NEXUS_KEY_FILE` : `secring.gpg` (note this is not the same as the value you set in step 5)
+  * `NEXUS_KEY_BASE64` : Your base64-encoded secret key (the output from step 8)
 
