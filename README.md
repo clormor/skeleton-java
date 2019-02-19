@@ -30,7 +30,7 @@ A skeleton project used as a template for creating java libraries. It provides a
 * Configures [CircleCI](https://circleci.com/) to;
   * Build all commits of the project
   * Upload test results and reports
-  * Upload code coverage analysis to [CodeClimate](https://codeclimate.com)
+  * Upload code coverage analysis to [CodeClimate](https://codeclimate.com) *(disabled by default)*
   * Publish commits on `develop` as snapshots to the maven central sanpshots repository *(disabled by default)*
   * Publish commits tagged with a version as staged releases to the maven central staging repository *(disabled by default)*
   * Automatically close and release staged releases to [maven central](https://search.maven.org/) using the [nexus-staging gradle plugin](https://github.com/Codearte/gradle-nexus-staging-plugin) *(disabled by default)*
@@ -117,6 +117,8 @@ Once configured, [CircleCI](https://circleci.com/) will build all commits pushed
 All commits pushed to GitHub should now be built in CircleCI. You can configure the build by making changes to `circle.yml`
 
 ## CodeClimate Integration
+
+*CodeClimate integration is disabled by default.*
 
 [CodeClimate](https://codeclimate.com) will analyse the jacoco coverage reports to determine test coverage and assess maintainability of your project's source code.
 
