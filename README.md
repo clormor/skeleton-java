@@ -30,8 +30,9 @@ A skeleton project used as a template for creating java libraries.
   * Upload code coverage analysis to [CodeClimate](https://codeclimate.com)
   * Publish commits on `develop` as snapshots to the [maven central sanpshots repository](https://oss.sonatype.org/content/repositories/snapshots/)
   * Publish commits tagged with a version as staged releases to the [maven central staging repository](https://oss.sonatype.org/service/local/staging/deploy/maven2)
-  * Automatically close and release staged releases to [maven central](https://oss.sonatype.org/service/local/staging/deploy/maven2) - no need to log into the nexus UI
+  * Automatically close and release staged releases to [maven central](https://oss.sonatype.org/service/local/staging/deploy/maven2) using the [Gradle Nexus Staging plugin](https://github.com/Codearte/gradle-nexus-staging-plugin)
 * `README` pre-formatted with some handy [shields](https://shields.io)
+* Perform releases and manage version numbers using the [Gradle Sonatype Nexus plugin](https://github.com/bmuschko/gradle-nexus-plugin)
 
 ## Usage
 
@@ -82,4 +83,14 @@ A skeleton project used as a template for creating java libraries.
 
         git commit -am "initial commit initiated from https://github.com/clormor/skeleton-java"
         git push --set-upstream origin develop
+
+## Performing the first release
+
+Releases are generated using the [Gradle Sonatype Nexus plugin](https://github.com/bmuschko/gradle-nexus-plugin). See its documentation for guidance.
+
+By default, this project is configured to publish releases to the `release` branch. The first time you wish to perform a release, you may need to create the `release` branch, if it does not already exist.
+
+        git branch release
+
+You should now be able to perform a release by running `./gradlew release` and following the on-screen prompts.
 
