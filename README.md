@@ -18,13 +18,15 @@
     </a>
 </p>
 
-A skeleton project used as a template for creating java libraries.
+A skeleton project used as a template for creating java libraries. It provides a set of useful features for open-source software development which are either enabled by default, or can easily be enabled by un-commenting various sections of the build configuration.
 
 ## Features
 
 * Imports commonly-used dependencies
 * Configures common static analysis tools: [jUnit](https://junit.org), [findbugs](https://findbugs.sourceforge.net) and [jacoco](https://www.eclemma.org/jacoco)
 * Configures the project and IDEs for code generation using the [immutables.io](https://immutables.github.io/) library *(disabled by default)*
+* Adds `-sources` and `-javadoc` artifacts for publishing using the [gradle nexus plugin](https://github.com/bmuschko/gradle-nexus-plugin)
+* Automatically signs artifacts using the [signing plugin](https://docs.gradle.org/current/userguide/signing_plugin.html)
 * Configures [CircleCI](https://circleci.com/) to;
   * Build all commits of the project
   * Upload test results and reports
@@ -33,7 +35,7 @@ A skeleton project used as a template for creating java libraries.
   * Publish commits tagged with a version as staged releases to the maven central staging repository *(disabled by default)*
   * Automatically close and release staged releases to [maven central](https://search.maven.org/) using the [nexus-staging gradle plugin](https://github.com/Codearte/gradle-nexus-staging-plugin) *(disabled by default)*
 * `README` pre-formatted with some handy [shields](https://shields.io)
-* Perform releases and manage version numbers using the [Sonatype Nexus gradle plugin](https://github.com/bmuschko/gradle-nexus-plugin)
+* Perform releases and manage version numbers using the [gradle nexus plugin](https://github.com/bmuschko/gradle-nexus-plugin)
 
 ## Local Setup
 
@@ -185,7 +187,7 @@ Releases will now be automatically promoted to maven central (see [Releases](##R
 
 ## Releases
 
-Releases are created using the [Gradle Sonatype Nexus plugin](https://github.com/bmuschko/gradle-nexus-plugin). A release can be performed locally by running
+Releases are created using the [gradle nexus plugin](https://github.com/bmuschko/gradle-nexus-plugin). A release can be performed locally by running
 
 	./gradlew release
 
