@@ -3,7 +3,7 @@ buildscript {
     mavenCentral()
   }
   dependencies {
-    classpath 'io.codearte.gradle.nexus:gradle-nexus-staging-plugin:0.20.0'
+//    classpath 'io.codearte.gradle.nexus:gradle-nexus-staging-plugin:0.20.0'
     classpath 'com.bmuschko:gradle-nexus-plugin:2.3.1'
   }
 }
@@ -16,13 +16,15 @@ plugins {
     id 'idea'
     id 'maven'
     id 'signing'
-    id 'org.inferred.processors' version '2.1.0'
+    // only if you use immutables
+//    id 'org.inferred.processors' version '2.1.0'
     id 'com.palantir.circle.style' version '1.1.4'
     id 'net.researchgate.release' version '2.8.0'
 }
 
 apply plugin: 'com.bmuschko.nexus'
-apply plugin: 'io.codearte.nexus-staging'
+// only apply this plugin once you're confident your releases look good
+//apply plugin: 'io.codearte.nexus-staging'
 
 // set these in your environment, and as environment variables in circle
 ext.nexusUsername = "$System.env.NEXUS_USER"
@@ -43,9 +45,9 @@ repositories {
 
 dependencies {
     compile "com.google.guava:guava:$guavaVersion"
-    compileOnly "com.google.code.findbugs:annotations:$findbugsVersion"
-    implementation "org.immutables:value-annotations:$immutablesVersion"
-    annotationProcessor "org.immutables:value:$immutablesVersion"
+    // only if you use immutables
+//    implementation "org.immutables:value-annotations:$immutablesVersion"
+//    annotationProcessor "org.immutables:value:$immutablesVersion"
     testCompile "junit:junit:$junitVersion"
 }
 
@@ -71,12 +73,12 @@ jacocoTestReport {
     }
 }
 
-// set a reasonable coverage threshold
 jacocoTestCoverageVerification {
     violationRules {
         rule {
             limit {
-                minimum = 0.5
+                // set this to a threshold you wish to enforce
+                minimum = 0
             }
         }
     }
@@ -101,12 +103,7 @@ release {
     }
 }
 
-nexusStaging {
-    // increase retry delay to unclutter circle builds when closing staged repositories
-    delayBetweenRetriesInMillis = 10000
-}
-
-// update this section for your project
+// use ./scripts/rename-project.sh to help update this section for your project
 modifyPom {
     project {
         name 'Skeleton Java'

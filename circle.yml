@@ -8,24 +8,20 @@ jobs:
 
     environment:
       # put your codeclimate reporter ID here
-      CC_TEST_REPORTER_ID: 9dd4f338f4ecb807d37dfa015d2133ec2ba01b3d3b016db63bcff63c21fe8bd5
+      CC_TEST_REPORTER_ID: 
 
     steps:
       - checkout
 
-      - run:
-          name: Generate signing key
-          command: scripts/generate-signing-key.sh
-
       # download the code climate CLI
       - run:
-          name: Setup Code Climate test-reporter
+          name: Setting up CodeClimate test-reporter
           command: |
             curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
             chmod +x ./cc-test-reporter
 
       - run:
-          name: Build project
+          name: Building project
           command: ./gradlew --info --refresh-dependencies clean build
 
       - store_test_results:
@@ -37,7 +33,7 @@ jobs:
 
       # upload the coverage report to code climate
       - run:
-          name: Upload coverage to code climate
+          name: Uploading coverage report to CodeClimate
           command: |
             export JACOCO_SOURCE_PATH=src/main/java
             ./cc-test-reporter format-coverage build/reports/jacoco/test/jacocoTestReport.xml -t jacoco
@@ -53,12 +49,13 @@ jobs:
 
       # allows circle to sign artifacts
       - run:
-          name: Generate signing key
+          name: Generating signing key
           command: scripts/generate-signing-key.sh
 
-      - run:
-          name: Upload archives to maven repository
-          command: ./gradlew --info --refresh-dependencies clean uploadArchives
+      # un-comment this section to automatically publish snapshots from circle builds
+      #- run:
+      #    name: Uploading to maven snapshot repository
+      #    command: ./gradlew --info --refresh-dependencies clean uploadArchives
 
   # publish releases
   publish-release:
@@ -70,16 +67,18 @@ jobs:
 
       # allows circle to sign artifacts
       - run:
-          name: Generate signing key
+          name: Generating signing key
           command: scripts/generate-signing-key.sh
 
-      - run:
-          name: Upload archives to maven repository
-          command: ./gradlew --info --refresh-dependencies clean uploadArchives
+      # un-comment this to automatically publish staging relases from circle builds
+      #- run:
+      #    name: Uploading to maven staging repository
+      #    command: ./gradlew --info --refresh-dependencies clean uploadArchives
 
-      - run:
-          name: Close and release artifacts
-          command: ./gradlew --info closeAndReleaseRepository
+      # un-comment this and enable the nexus-staging plugin to automatically release staged repositories from circle builds
+      #- run:
+      #    name: Releasing archives from staging repository
+      #    command: ./gradlew --info closeAndReleaseRepository
 
 workflows:
   version: 2
