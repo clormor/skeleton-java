@@ -36,7 +36,8 @@ A skeleton project used as a template for creating java libraries.
 
 ## Usage
 
-1. If you have not configured open source repository hosting follow [these instructions](https://central.sonatype.org/pages/ossrh-guide.html), specifying a `groupId` of `io.github.<your gh username>`. You will need to wait a few hours for this ticket to be completed before pushing any changes.
+1. If you have not configured open source repository hosting follow [these instructions](https://central.sonatype.org/pages/ossrh-guide.html), specifying a `groupId` of `io.github.<your-github-username>`. You will need to wait a few hours for this ticket to be completed before pushing any changes.
+
 2. Clone this repository to a new folder
 
         git clone git@github.com:clormor/skeleton-java.git <my-new-project> && cd <my-project>
@@ -45,41 +46,43 @@ A skeleton project used as a template for creating java libraries.
 
         ./scripts/rename-project.sh skeleton-java <my-new-project>
 
-4. Update the `group` in `build.gradle` to your `groupId` (see step 1)
+4. Update the `modifyPom` closure in `build.gradle` with your porject name, license and developer information
 
-5. Set the following environment variables on your local machine e.g. in `~/.bashrc`:
+5. Update the `group` in `build.gradle` to your `groupId` (see step 1)
+
+6. Set the following environment variables on your local machine e.g. in `~/.bashrc`:
   * `NEXUS_USER` : Your sonatype nexus username (see step 1)
   * `NEXUS_PASSWORD` : Your sonatype nexus password (see step 1)
   * `NEXUS_KEY_ID` : Your public key for signing artifacts
   * `NEXUS_KEY_PASSWORD` : The password you used to encrypt your public key
   * `NEXUS_KEY_FILE` : `~/.gnupg/secring.gpg`
 
-6. As a sanity check, confirm that your project builds successfully on your local machine
+7. As a sanity check, confirm that your project builds successfully on your local machine
 
         ./gradlew clean build
 
-7. Create a new repository in [GitHub](https://github.com) and point update the `origin` remote
+8. Create a new repository in [GitHub](https://github.com) and point update the `origin` remote
 
         git remote set-url origin git@github.com:<repository>/<my-new-project>
 
-8. Add your new project in [CircleCI](https://circleci.com/) and [CodeClimate](https://codeclimate.com)
+9. Add your new project in [CircleCI](https://circleci.com/) and [CodeClimate](https://codeclimate.com)
   * You may need to configure the default branch in CodeClimate to `develop` under Repo Settings.
 
-9. Grab the Test Reporter Id from CodeClimate and update the value of `CC_TEST_REPORTER_ID` in `circle.yml`
+10. Grab the Test Reporter Id from CodeClimate and update the value of `CC_TEST_REPORTER_ID` in `circle.yml`
 
-10. To sign artifacts in circle, copy your base64-encoded secret key to your clipboard. For example, on Mac:
+11. To sign artifacts in circle, copy your base64-encoded secret key to your clipboard. For example, on Mac:
 
         base64 -i ~/.gnupg/secring.gpg | pbcopy
 
-11. Set the following environment variables in CircleCI:
-  * `NEXUS_USER` : (see step 5)
-  * `NEXUS_PASSWORD` : (see step 5)
-  * `NEXUS_KEY_ID` : (see step 5)
-  * `NEXUS_KEY_PASSWORD` : (see step 5)
-  * `NEXUS_KEY_FILE` : `secring.gpg` (note this is not the same as the value you set in step 5)
-  * `NEXUS_KEY_BASE64` : Your base64-encoded secret key (the output from step 10)
+12. Set the following environment variables in CircleCI:
+  * `NEXUS_USER` : (see step 6)
+  * `NEXUS_PASSWORD` : (see step 6)
+  * `NEXUS_KEY_ID` : (see step 6)
+  * `NEXUS_KEY_PASSWORD` : (see step 6)
+  * `NEXUS_KEY_FILE` : `secring.gpg` (note this is not the same as the value you set in step 6)
+  * `NEXUS_KEY_BASE64` : Your base64-encoded secret key (the output from step 11)
 
-12. Commit and push your changes to `develop`
+13. Commit and push your changes to `develop`
 
         git commit -am "initial commit initiated from https://github.com/clormor/skeleton-java"
         git push --set-upstream origin develop

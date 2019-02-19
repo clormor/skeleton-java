@@ -106,6 +106,7 @@ nexusStaging {
     delayBetweenRetriesInMillis = 10000
 }
 
+// update this section for your project
 modifyPom {
     project {
         name 'Skeleton Java'
