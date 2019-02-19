@@ -58,28 +58,28 @@ A skeleton project used as a template for creating java libraries.
 
         ./gradlew clean build
 
-6. Create a new repository in [GitHub](https://github.com) and point update the `origin` remote
+7. Create a new repository in [GitHub](https://github.com) and point update the `origin` remote
 
         git remote set-url origin git@github.com:<repository>/<my-new-project>
 
-7. Add your new project in [CircleCI](https://circleci.com/) and [CodeClimate](https://codeclimate.com)
-  * You may need to configure the default branch in CodeClimate to `develop` under *Repo Settings*.
+8. Add your new project in [CircleCI](https://circleci.com/) and [CodeClimate](https://codeclimate.com)
+  * You may need to configure the default branch in CodeClimate to `develop` under Repo Settings.
 
-8. Grab the Test Reporter Id from CodeClimate and update the value of `CC_TEST_REPORTER_ID` in `circle.yml`
+9. Grab the Test Reporter Id from CodeClimate and update the value of `CC_TEST_REPORTER_ID` in `circle.yml`
 
-9. To sign artifacts in circle, copy your base64-encoded secret key to your clipboard. For example, on Mac:
+10. To sign artifacts in circle, copy your base64-encoded secret key to your clipboard. For example, on Mac:
 
         base64 -i ~/.gnupg/secring.gpg | pbcopy
 
-10. Set the following environment variables in CircleCI:
+11. Set the following environment variables in CircleCI:
   * `NEXUS_USER` : (see step 5)
   * `NEXUS_PASSWORD` : (see step 5)
   * `NEXUS_KEY_ID` : (see step 5)
   * `NEXUS_KEY_PASSWORD` : (see step 5)
   * `NEXUS_KEY_FILE` : `secring.gpg` (note this is not the same as the value you set in step 5)
-  * `NEXUS_KEY_BASE64` : Your base64-encoded secret key (the output from step 9)
+  * `NEXUS_KEY_BASE64` : Your base64-encoded secret key (the output from step 10)
 
-11. Commit and push your changes to `develop`
+12. Commit and push your changes to `develop`
 
         git commit -am "initial commit initiated from https://github.com/clormor/skeleton-java"
         git push --set-upstream origin develop
