@@ -1,4 +1,4 @@
-package io.github.clormor.skeleton.hackerrank;
+package io.github.clormor.skeleton.hackerrank.strings;
 
 import org.junit.Before;
 import org.junit.Test;
