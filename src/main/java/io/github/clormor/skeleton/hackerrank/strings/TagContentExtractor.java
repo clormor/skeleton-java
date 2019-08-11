@@ -5,6 +5,18 @@ import java.util.regex.Pattern;
 
 public class TagContentExtractor {
 
+    /*
+     * <          - look for tag start
+     * (?!/)      - make sure this is not a closing tag
+     * (.+)>      - greedily (i.e. largest) match of one or more
+     *              printable characters followed by tag end.
+     *              captures the contents as group 1
+     * ([^<>]+)   - greedily (i.e. largest) match content within tag.
+     *              can contain any printable character except angle brackets.
+     *              captures the contents as group 2
+     * </\\1>     - find a closing tag whose name matches the contents
+     *              of group 1 (i.e. a matching closing tag)
+     */
     static final Pattern p = Pattern.compile("<(?!/)(.+)>([^<>]+)</\\1>");
 
     public String extract(String[] lines) {
@@ -16,18 +28,6 @@ public class TagContentExtractor {
     }
 
     public String extract(String line) {
-        /*
-         * <          - look for tag start
-         * (?!/)      - make sure this is not a closing tag
-         * (.+)>      - greedily (i.e. largest) match of one or more
-         *              printable characters followed by tag end.
-         *              captures the contents as group 1
-         * ([^<>]+)   - greedily (i.e. largest) match content within tag.
-         *              can contain any printable character except angle brackets.
-         *              captures the contents as group 2
-         * </\\1>     - find a closing tag whose name matches the contents
-         *              of group 1 (i.e. a matching closing tag)
-         */
         Matcher m = p.matcher(line);
         StringBuilder content = new StringBuilder();
         while (m.find()) {
