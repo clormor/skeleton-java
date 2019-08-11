@@ -58,7 +58,7 @@ public class BotSavesPrincess {
         return new Move(bot, move);
     }
 
-    class Position {
+    static class Position {
         int x, y;
 
         Position(int _x, int _y) {
@@ -74,9 +74,14 @@ public class BotSavesPrincess {
                 return false;
             }
         }
+
+        @Override
+        public int hashCode() {
+            return x * y;
+        }
     }
 
-    class Move {
+    static class Move {
         Position newPosition;
         String lastMove;
 
