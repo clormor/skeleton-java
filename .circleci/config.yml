@@ -15,31 +15,31 @@ jobs:
           name: Generating signing key
           command: scripts/generate-signing-key.sh
 
-      #- run:
-      #    name: Setup Code Climate test-reporter
-      #    command: | 
-      #      curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
-      #      chmod +x ./cc-test-reporter
+      - run:
+          name: Setup Code Climate test-reporter
+          command: | 
+            curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
+            chmod +x ./cc-test-reporter
 
-      #- run:
-      #    name: Code Climate before-build
-      #    command: ./cc-test-reporter before-build
+      - run:
+          name: Code Climate before-build
+          command: ./cc-test-reporter before-build
 
       - run:
           name: Compile and check project
           command: ./gradlew --info check --stacktrace --parallel --max-workers=16
 
-      #- run:
-      #    name: Code Climate after-build
-      #    command: ./cc-test-reporter after-build --exit-code $?
+      - run:
+          name: Code Climate after-build
+          command: ./cc-test-reporter after-build --exit-code $?
 
-      #- run:
-      #    name: Uploading coverage report to CodeClimate
-      #    command: |
-      #      export JACOCO_SOURCE_PATH=src/main/java
-      #      ./cc-test-reporter format-coverage build/reports/jacoco/test/jacocoTestReport.xml -t jacoco
-      #      ./cc-test-reporter upload-coverage
-      
+      - run:
+          name: Uploading coverage report to CodeClimate
+          command: |
+            export JACOCO_SOURCE_PATH=src/main/java
+            ./cc-test-reporter format-coverage build/reports/jacoco/test/jacocoTestReport.xml -t jacoco
+            ./cc-test-reporter upload-coverage
+
       - save_cache:
           key: 'gradle-wrapper-v1-{{ checksum "gradle/wrapper/gradle-wrapper.properties" }}'
           paths: [ ~/.gradle/wrapper ]
@@ -70,22 +70,6 @@ jobs:
 
       - store_artifacts:
           path: build/libs/
-
-
-          #- store_test_results:
-          #path: ~/junit
-
-          #- run:
-          #name: Save test results
-          #command: mkdir -p ~/junit/ && find . -type f -regex ".*/build/test-results/.*xml" -exec cp {} ~/junit/ \;
-          #when: always
-
-          #      - store_artifacts:
-          # path: build/reports/findbugs
-          #- store_artifacts:
-          #path: build/reports/jacoco
-          #- store_artifacts:
-          #path: build/reports/tests
 
   publish-snapshot:
     docker: [{ image: circleci/openjdk:8-jdk-browsers }]
