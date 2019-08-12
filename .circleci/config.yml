@@ -30,7 +30,7 @@ jobs:
       - run:
           name: Compile and check project
           command: ./gradlew build --stacktrace --parallel --max-workers=16
-      -run:
+      - run:
           name: Code Climate after-build
           command: ./cc-test-reporter after-build --exit-code $?
       # upload the coverage report to code climate
