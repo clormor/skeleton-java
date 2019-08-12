@@ -27,7 +27,7 @@ jobs:
 
       - run:
           name: Compile and check project
-          command: ./gradlew --info test --stacktrace --parallel --max-workers=16
+          command: ./gradlew --info check --stacktrace --parallel --max-workers=16
 
       #- run:
       #    name: Code Climate after-build
