@@ -72,11 +72,6 @@ jobs:
       - attach_workspace: { at: /home/circleci }
       - restore_cache: { key: 'gradle-wrapper-v1-{{ checksum "gradle/wrapper/gradle-wrapper.properties" }}' }
       - restore_cache: { key: 'compile-gradle-cache-v1-{{ checksum "gradle.properties" }}-{{ checksum "build.gradle" }}' }
-
-      - run:
-          name: Generating signing key
-          command: scripts/generate-signing-key.sh
-
       - run:
           name: Uploading to maven snapshot repository
           command: ./gradlew --info --refresh-dependencies clean uploadArchives
@@ -106,26 +101,25 @@ workflows:
   # for non-snapshot/release commits, build the project but do not publish it
   verify:
     jobs:
-      - build
-  #   - build:
-  #        filters:
-  #          branches:
-  #            ignore:
-  #              - develop
-  #              - release
+      - build:
+          filters:
+            branches:
+              ignore:
+                - develop
+                - release
   # publish a snapshot for commits on develop
-  #publish-snapshot:
-  #  jobs:
-  #    - build:
-  #        filters:
-  #          branches:
-  #            only: develop
-  #    - publish-snapshot:
-  #        requires:
-  #          - build
-  #        filters:
-  #          branches:
-  #            only: develop
+  publish-snapshot:
+    jobs:
+      - build:
+          filters:
+            branches:
+              only: develop
+      - publish-snapshot:
+          requires:
+            - build
+          filters:
+            branches:
+              only: develop
   # publish a release for commits tagged with a version
   #publish-release:
   #  jobs:
