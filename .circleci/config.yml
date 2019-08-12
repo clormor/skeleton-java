@@ -98,48 +98,44 @@ jobs:
 
 workflows:
   version: 2
+
   # for non-snapshot/release commits, build the project but do not publish it
   verify:
     jobs:
       - build:
           filters:
             branches:
-              ignore:
-                - develop
-                - release
-                - circle2
+              ignore: develop
+
   # publish a snapshot for commits on develop
   publish-snapshot:
     jobs:
       - build:
           filters:
             branches:
-              only:
-                - develop
-                - circle2
+              only: develop
       - publish-snapshot:
           requires:
             - build
           filters:
             branches:
-              only:
-                - develop
-                - circle2
+              only: develop
+
   # publish a release for commits tagged with a version
-  #publish-release:
-  #  jobs:
-  #    - build:
-  #        filters:
-  #          branches:
-  #            ignore: /.*/
-  #          tags:
-  #            only: /[0-9]+(\.[0-9]+)*/
-  #    - publish-release:
-  #        requires:
-  #          - build
-  #        filters:
-  #          branches:
-  #            ignore: /.*/
-  #          tags:
-  #            only: /[0-9]+(\.[0-9]+)*/
+  publish-release:
+    jobs:
+      - build:
+          filters:
+            branches:
+              ignore: /.*/
+            tags:
+              only: /[0-9]+(\.[0-9]+)*/
+      - publish-release:
+          requires:
+            - build
+          filters:
+            branches:
+              ignore: /.*/
+            tags:
+              only: /[0-9]+(\.[0-9]+)*/
   
