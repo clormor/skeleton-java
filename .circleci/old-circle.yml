@@ -8,7 +8,7 @@ jobs:
 
     environment:
       # put your codeclimate reporter ID here
-      CC_TEST_REPORTER_ID: 
+      CC_TEST_REPORTER_ID: 9dd4f338f4ecb807d37dfa015d2133ec2ba01b3d3b016db63bcff63c21fe8bd5
 
     steps:
       - checkout

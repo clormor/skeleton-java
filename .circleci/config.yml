@@ -1,0 +1,155 @@
+# Java Gradle CircleCI 2.0 configuration file
+#
+# Check https://circleci.com/docs/2.0/language-java/ for more details
+#
+version: 2
+jobs:
+  compile:
+    environment:
+      CC_TEST_REPORTER_ID: 9dd4f338f4ecb807d37dfa015d2133ec2ba01b3d3b016db63bcff63c21fe8bd5
+    docker: [{ image: circleci/openjdk:8 }]
+    steps:
+      - checkout
+      - restore_cache: { key: 'gradle-wrapper-v1-{{ checksum "gradle/wrapper/gradle-wrapper.properties" }}' }
+      - restore_cache: { key: 'compile-gradle-cache-v1-{{ checksum "gradle.properties" }}-{{ checksum "build.gradle" }}' }
+      # allows circle to sign artifacts
+      - run:
+          name: Generating signing key
+          command: scripts/generate-signing-key.sh
+
+      # download the code climate CLI
+      - run:
+      - run:
+          name: Setup Code Climate test-reporter
+          command: | 
+            curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
+            chmod +x ./cc-test-reporter
+      - run:
+          name: Code Climate before-build
+          command: ./cc-test-reporter before-build
+      - run:
+          name: Compile and check project
+          command: ./gradlew build --stacktrace --parallel --max-workers=16
+      -run:
+          name: Code Climate after-build
+          command: ./cc-test-reporter after-build --exit-code $?
+      # upload the coverage report to code climate
+      - run:
+          name: Uploading coverage report to CodeClimate
+          command: |
+            export JACOCO_SOURCE_PATH=src/main/java
+            ./cc-test-reporter format-coverage build/reports/jacoco/test/jacocoTestReport.xml -t jacoco
+            ./cc-test-reporter upload-coverage
+      - save_cache:
+          key: 'gradle-wrapper-v1-{{ checksum "gradle/wrapper/gradle-wrapper.properties" }}'
+          paths: [ ~/.gradle/wrapper ]
+      - save_cache:
+          key: 'compile-gradle-cache-v1-{{ checksum "gradle.properties" }}-{{ checksum "build.gradle" }}'
+          paths: [ ~/.gradle/caches ]
+          #- run:
+          #name: Save test results
+          #command: mkdir -p ~/junit/ && find . -type f -regex ".*/build/test-results/.*xml" -exec cp {} ~/junit/ \;
+          #when: always
+      - persist_to_workspace:
+          root: /home/circleci
+          paths: [ project ]
+          #- store_test_results:
+          #path: ~/junit
+      - store_artifacts:
+          path: build/libs/
+          #      - store_artifacts:
+          # path: build/reports/findbugs
+          #- store_artifacts:
+          #path: build/reports/jacoco
+          #- store_artifacts:
+          #path: build/reports/tests
+      - store_test_results:
+          path: build/test-results/test
+      - store_artifacts:
+          path: build/reports
+          destination: reports
+
+  # publish snapshots
+  publish-snapshot:
+    docker: [{ image: circleci/openjdk:8-jdk-browsers }]
+    steps:
+      - attach_workspace: { at: /home/circleci }
+      - restore_cache: { key: 'gradle-wrapper-v1-{{ checksum "gradle/wrapper/gradle-wrapper.properties" }}' }
+      - restore_cache: { key: 'compile-gradle-cache-v1-{{ checksum "gradle.properties" }}-{{ checksum "build.gradle" }}' }
+      # allows circle to sign artifacts
+      - run:
+          name: Generating signing key
+          command: scripts/generate-signing-key.sh
+      # un-comment this section to automatically publish snapshots from circle builds
+      - run:
+          name: Uploading to maven snapshot repository
+          command: ./gradlew --info --refresh-dependencies clean uploadArchives
+
+  publish-release:
+    docker:
+      - image: circleci/openjdk:8-jdk-browsers
+
+    steps:
+      - attach_workspace: { at: /home/circleci }
+      - restore_cache: { key: 'gradle-wrapper-v1-{{ checksum "gradle/wrapper/gradle-wrapper.properties" }}' }
+      - restore_cache: { key: 'compile-gradle-cache-v1-{{ checksum "gradle.properties" }}-{{ checksum "build.gradle" }}' }
+      # allows circle to sign artifacts
+      - run:
+          name: Generating signing key
+          command: scripts/generate-signing-key.sh
+
+      # un-comment this to automatically publish staging relases from circle builds
+      - run:
+          name: Uploading to maven staging repository
+          command: ./gradlew --info --refresh-dependencies clean uploadArchives
+
+      # un-comment this and enable the nexus-staging plugin to automatically release staged repositories from circle builds
+      #- run:
+      #    name: Releasing archives from staging repository
+      #    command: ./gradlew --info closeAndReleaseRepository
+
+workflows:
+  version: 2
+
+  # for non-snapshot/release commits, build the project but do not publish it
+  verify:
+    jobs:
+      - build:
+          filters:
+            branches:
+              ignore:
+                - develop
+                - release
+
+  # publish a snapshot for commits on develop
+  publish-snapshot:
+    jobs:
+      - build:
+          filters:
+            branches:
+              only: develop
+      - publish-snapshot:
+          requires:
+            - build
+          filters:
+            branches:
+              only: develop
+
+  # publish a release for commits tagged with a version
+  publish-release:
+    jobs:
+      - build:
+          filters:
+            branches:
+              ignore: /.*/
+            tags:
+              only: /[0-9]+(\.[0-9]+)*/
+      - publish-release:
+          requires:
+            - build
+          filters:
+            branches:
+              ignore: /.*/
+            tags:
+              only: /[0-9]+(\.[0-9]+)*/
+
