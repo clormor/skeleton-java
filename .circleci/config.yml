@@ -11,9 +11,9 @@ jobs:
       - restore_cache: { key: 'gradle-wrapper-v1-{{ checksum "gradle/wrapper/gradle-wrapper.properties" }}' }
       - restore_cache: { key: 'compile-gradle-cache-v1-{{ checksum "gradle.properties" }}-{{ checksum "build.gradle" }}' }
 
-      #- run:
-      #    name: Generating signing key
-      #    command: scripts/generate-signing-key.sh
+      - run:
+          name: Generating signing key
+          command: scripts/generate-signing-key.sh
 
       #- run:
       #    name: Setup Code Climate test-reporter
@@ -164,4 +164,4 @@ workflows:
   #            ignore: /.*/
   #          tags:
   #            only: /[0-9]+(\.[0-9]+)*/
-        
+  
