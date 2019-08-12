@@ -68,7 +68,6 @@ jobs:
       - store_artifacts:
           path: build/reports
           destination: reports
-
   # publish snapshots
   publish-snapshot:
     docker: [{ image: circleci/openjdk:8-jdk-browsers }]
@@ -84,11 +83,9 @@ jobs:
       - run:
           name: Uploading to maven snapshot repository
           command: ./gradlew --info --refresh-dependencies clean uploadArchives
-
   publish-release:
     docker:
       - image: circleci/openjdk:8-jdk-browsers
-
     steps:
       - attach_workspace: { at: /home/circleci }
       - restore_cache: { key: 'gradle-wrapper-v1-{{ checksum "gradle/wrapper/gradle-wrapper.properties" }}' }
@@ -97,20 +94,16 @@ jobs:
       - run:
           name: Generating signing key
           command: scripts/generate-signing-key.sh
-
       # un-comment this to automatically publish staging relases from circle builds
       - run:
           name: Uploading to maven staging repository
           command: ./gradlew --info --refresh-dependencies clean uploadArchives
-
       # un-comment this and enable the nexus-staging plugin to automatically release staged repositories from circle builds
       #- run:
       #    name: Releasing archives from staging repository
       #    command: ./gradlew --info closeAndReleaseRepository
-
 workflows:
   version: 2
-
   # for non-snapshot/release commits, build the project but do not publish it
   verify:
     jobs:
@@ -120,7 +113,6 @@ workflows:
               ignore:
                 - develop
                 - release
-
   # publish a snapshot for commits on develop
   publish-snapshot:
     jobs:
@@ -134,7 +126,6 @@ workflows:
           filters:
             branches:
               only: develop
-
   # publish a release for commits tagged with a version
   publish-release:
     jobs:
