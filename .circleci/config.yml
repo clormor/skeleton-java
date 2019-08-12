@@ -107,19 +107,24 @@ workflows:
               ignore:
                 - develop
                 - release
+                - circle2
   # publish a snapshot for commits on develop
   publish-snapshot:
     jobs:
       - build:
           filters:
             branches:
-              only: develop
+              only:
+                - develop
+                - circle2
       - publish-snapshot:
           requires:
             - build
           filters:
             branches:
-              only: develop
+              only:
+                - develop
+                - circle2
   # publish a release for commits tagged with a version
   #publish-release:
   #  jobs:
