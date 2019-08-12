@@ -7,6 +7,9 @@
     <a href="https://maven-badges.herokuapp.com/maven-central/io.github.clormor/skeleton-java">
         <img src="https://img.shields.io/maven-central/v/io.github.clormor/skeleton-java.svg?style=plastic" />
     </a>
+    <a href="https://oss.sonatype.org/content/repositories/snapshots/io/github/clormor/skeleton-java/">
+        <img src="https://img.shields.io/nexus/s/https/oss.sonatype.org/io.github.clormor/skeleton-java?style=plastic" />
+    </a>
     <a href="https://codeclimate.com/github/clormor/skeleton-java">
         <img src="https://img.shields.io/codeclimate/coverage/clormor/skeleton-java.svg?style=plastic" />
     </a>
