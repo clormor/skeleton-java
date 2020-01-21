@@ -49,6 +49,8 @@ dependencies {
 //    implementation "org.immutables:value-annotations:$immutablesVersion"
 //    annotationProcessor "org.immutables:value:$immutablesVersion"
     testCompile "junit:junit:$junitVersion"
+    testCompile "org.assertj:assertj-core:$assertjVersion"
+
 }
 
 idea {
