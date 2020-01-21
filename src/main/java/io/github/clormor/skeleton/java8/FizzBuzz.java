@@ -140,4 +140,32 @@ class FizzBuzzJava8 implements FizzBuzz {
                 .mapToObj(n -> fizzbuzz.next().orElse(fizz.next().orElse(buzz.next().orElse(Integer.toString(n)))))
                 .collect(Collectors.toList());
     }
+
+    @VisibleForTesting
+    List<String> fizzBuzzAttempt5() {
+        Iterator<Optional<String>> iterator = IntStream.rangeClosed(1, 100).mapToObj(n -> Optional.of(Integer.toString(n))).iterator();
+        Iterator<Optional<String>> fizz = IntStream.rangeClosed(1, 100)
+                .mapToObj(n -> iterator.next().filter(i -> Integer.valueOf(i) % 3 != 0))
+                .map(n -> Optional.of(n.orElse("Fizz")))
+                .map(n -> n.filter(m -> m.equals("Fizz")))
+                .iterator();
+
+        Iterator<Optional<String>> iterator2 = IntStream.rangeClosed(1, 100).mapToObj(n -> Optional.of(Integer.toString(n))).iterator();
+        Iterator<Optional<String>> buzz = IntStream.rangeClosed(1, 100)
+                .mapToObj(n -> iterator2.next().filter(i -> Integer.valueOf(i) % 5 != 0))
+                .map(n -> Optional.of(n.orElse("Buzz")))
+                .map(n -> n.filter(m -> m.equals("Buzz")))
+                .iterator();
+
+        Iterator<Optional<String>> iterator3 = IntStream.rangeClosed(1, 100).mapToObj(n -> Optional.of(Integer.toString(n))).iterator();
+        Iterator<Optional<String>> fizzbuzz = IntStream.rangeClosed(1, 100)
+                .mapToObj(n -> iterator3.next().filter(i -> Integer.valueOf(i) % 15 != 0))
+                .map(n -> Optional.of(n.orElse("FizzBuzz")))
+                .map(n -> n.filter(m -> m.equals("FizzBuzz")))
+                .iterator();
+
+        return IntStream.rangeClosed(1, 100)
+                .mapToObj(n -> fizzbuzz.next().orElse(fizz.next().orElse(buzz.next().orElse(Integer.toString(n)))))
+                .collect(Collectors.toList());
+    }
 }
