@@ -38,10 +38,6 @@ class FizzBuzzLegacy implements FizzBuzz {
         }
         return Integer.toString(n);
     }
-
-    public static void main(String[] args) {
-        System.out.println(new FizzBuzzLegacy().fizzBuzz());
-    }
 }
 
 class FizzBuzzJava8 implements FizzBuzz {
@@ -101,6 +97,12 @@ class FizzBuzzJava8 implements FizzBuzz {
                 .collect(Collectors.toList());
     }
 
+    private static String fizzBuzzMethodRef(int n) {
+        return (n % 5 == 0) ?
+                ((n % 3 == 0) ? "FizzBuzz" : "Buzz") :
+                ((n % 3 == 0) ? "Fizz" : Integer.toString(n));
+    }
+
     /**
      * <p>
      * Would not have figured this out without reading https://stackoverflow.com/questions/37814655/fizzbuzz-using-jdk8-lambda
@@ -111,32 +113,24 @@ class FizzBuzzJava8 implements FizzBuzz {
      */
     @VisibleForTesting
     List<String> fizzBuzzAttempt4() {
-        // create an infinite stream of strings by flattening a string array
-        Iterator<String> fizz = Stream.generate(() -> new String[]{null, null, "Fizz"})
-                .flatMap(array -> Arrays.stream(array)).iterator();
+        // create an infinite stream of strings by flattening a nullable string array
+        Iterator<Optional<String>> fizz = Stream.generate(() -> new String[]{null, null, "Fizz"})
+                .flatMap(array -> Arrays.stream(array))
+                .map(n -> Optional.ofNullable(n))
+                .iterator();
 
-        Iterator<String> buzz = Stream.generate(() -> new String[]{null, null, null, null, "Buzz"})
-                .flatMap(array -> Arrays.stream(array)).iterator();
+        Iterator<Optional<String>> buzz = Stream.generate(() -> new String[]{null, null, null, null, "Buzz"})
+                .flatMap(array -> Arrays.stream(array))
+                .map(n -> Optional.ofNullable(n))
+                .iterator();
 
-        Iterator<String> fizzbuzz = Stream.generate(() -> new String[]{null, null, null, null, null, null, null, null, null, null, null, null, null, null, "FizzBuzz"})
-                .flatMap(array -> Arrays.stream(array)).iterator();
-
-        Iterator<Optional<String>> fizzes = IntStream.rangeClosed(1, 100).mapToObj(n -> Optional.ofNullable(fizz.next())).iterator();
-        Iterator<Optional<String>> buzzes = IntStream.rangeClosed(1, 100).mapToObj(n -> Optional.ofNullable(buzz.next())).iterator();
-        Iterator<Optional<String>> fizzbuzzes = IntStream.rangeClosed(1, 100).mapToObj(n -> Optional.ofNullable(fizzbuzz.next())).iterator();
+        Iterator<Optional<String>> fizzbuzz = Stream.generate(() -> new String[]{null, null, null, null, null, null, null, null, null, null, null, null, null, null, "FizzBuzz"})
+                .flatMap(array -> Arrays.stream(array))
+                .map(n -> Optional.ofNullable(n))
+                .iterator();
 
         return IntStream.rangeClosed(1, 100)
-                .mapToObj(n -> fizzbuzzes.next().orElse(fizzes.next().orElse(buzzes.next().orElse(Integer.toString(n)))))
+                .mapToObj(n -> fizzbuzz.next().orElse(fizz.next().orElse(buzz.next().orElse(Integer.toString(n)))))
                 .collect(Collectors.toList());
-    }
-
-    private static String fizzBuzzMethodRef(int n) {
-        return (n % 5 == 0) ?
-                ((n % 3 == 0) ? "FizzBuzz" : "Buzz") :
-                ((n % 3 == 0) ? "Fizz" : Integer.toString(n));
-    }
-
-    public static void main(String[] args) {
-        System.out.println(new FizzBuzzJava8().fizzBuzz());
     }
 }
