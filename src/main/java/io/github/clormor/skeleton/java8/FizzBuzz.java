@@ -114,22 +114,28 @@ class FizzBuzzJava8 implements FizzBuzz {
      */
     @VisibleForTesting
     List<String> fizzBuzzAttempt4() {
-        // create an infinite stream of strings by flattening a nullable string array
+        // create an infinite Optional iterator by flattening a nullable array where every 3rd string is "Fizz"...
         Iterator<Optional<String>> fizz = Stream.generate(() -> new String[]{null, null, "Fizz"})
                 .flatMap(array -> Arrays.stream(array))
                 .map(n -> Optional.ofNullable(n))
                 .iterator();
 
+        // as per above, but every 5th string is "Buzz"...
         Iterator<Optional<String>> buzz = Stream.generate(() -> new String[]{null, null, null, null, "Buzz"})
                 .flatMap(array -> Arrays.stream(array))
                 .map(n -> Optional.ofNullable(n))
                 .iterator();
 
+        // as per above, but every 15th string is "FizzBuzz"...
         Iterator<Optional<String>> fizzbuzz = Stream.generate(() -> new String[]{null, null, null, null, null, null, null, null, null, null, null, null, null, null, "FizzBuzz"})
                 .flatMap(array -> Arrays.stream(array))
                 .map(n -> Optional.ofNullable(n))
                 .iterator();
 
+        /*
+         * Zip the streams together by chaining orElse. Return the integer if all 3 iterators return null.
+         * This works because <iterator>.next() is always evaluated even if the value itself is not used
+         */
         return IntStream.rangeClosed(1, 100)
                 .mapToObj(n -> fizzbuzz.next().orElse(fizz.next().orElse(buzz.next().orElse(Integer.toString(n)))))
                 .collect(Collectors.toList());
