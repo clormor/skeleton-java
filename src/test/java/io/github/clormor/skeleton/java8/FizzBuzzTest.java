@@ -34,5 +34,6 @@ public class FizzBuzzTest {
         assertThat(fizzBuzz.fizzBuzzAttempt3()).containsExactlyElementsOf(attempt2);
         assertThat(fizzBuzz.fizzBuzzAttempt4()).containsExactlyElementsOf(attempt2);
         assertThat(fizzBuzz.fizzBuzzAttempt5()).containsExactlyElementsOf(attempt2);
+        assertThat(fizzBuzz.fizzBuzzAttempt6()).containsExactlyElementsOf(attempt2);
     }
 }

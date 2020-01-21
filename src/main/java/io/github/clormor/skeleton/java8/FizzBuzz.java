@@ -49,7 +49,7 @@ class FizzBuzzJava8 implements FizzBuzz {
         return fizzBuzzAttempt4();
     }
 
-    /**
+    /*
      * This naive approach fails:
      * <p>
      * [1] The filter/map operation returns a filtered stream, not the entire stream.
@@ -68,7 +68,7 @@ class FizzBuzzJava8 implements FizzBuzz {
                 .collect(Collectors.toList());
     }
 
-    /**
+    /*
      * This approach works, but uses shorthand conditionals.
      * <p>
      * The lambda function used in mapToObj is kinda messy to read.
@@ -82,7 +82,7 @@ class FizzBuzzJava8 implements FizzBuzz {
                 .collect(Collectors.toList());
     }
 
-    /**
+    /*
      * <p>
      * This approach works in the same way as fizzBuzz2, but is cleaner.
      * </p>
@@ -104,7 +104,7 @@ class FizzBuzzJava8 implements FizzBuzz {
                 ((n % 3 == 0) ? "Fizz" : Integer.toString(n));
     }
 
-    /**
+    /*
      * <p>
      * Would not have figured this out without reading https://stackoverflow.com/questions/37814655/fizzbuzz-using-jdk8-lambda
      * </p>
@@ -141,6 +141,10 @@ class FizzBuzzJava8 implements FizzBuzz {
                 .collect(Collectors.toList());
     }
 
+    /*
+     * As per attempt 4 but attempts to do away with the array initialisations.
+     * Could easily be refactored a little, but regardless is a horrific way of doing things.
+     */
     @VisibleForTesting
     List<String> fizzBuzzAttempt5() {
         Iterator<Optional<String>> iterator = IntStream.rangeClosed(1, 100).mapToObj(n -> Optional.of(Integer.toString(n))).iterator();
@@ -167,5 +171,34 @@ class FizzBuzzJava8 implements FizzBuzz {
         return IntStream.rangeClosed(1, 100)
                 .mapToObj(n -> fizzbuzz.next().orElse(fizz.next().orElse(buzz.next().orElse(Integer.toString(n)))))
                 .collect(Collectors.toList());
+    }
+
+    /*
+     * Credit to @stefank for this much neater solution which involves no loops, conditionals or array initialising
+     */
+    @VisibleForTesting
+    List<String> fizzBuzzAttempt6() {
+        return integers().map(i -> i.toString())
+                .map(i -> replaceIfMultiple(i, 15, "FizzBuzz"))
+                .map(i -> replaceIfMultiple(i, 5, "Buzz"))
+                .map(i -> replaceIfMultiple(i, 3, "Fizz"))
+                .limit(100)
+                .collect(Collectors.toList());
+    }
+
+    static Stream<Integer> integers() {
+        return Stream.iterate(1, i -> i + 1);
+    }
+
+    static String replaceIfMultiple(String intStr, int modulus, String replacement) {
+        return Optional.of(intStr).filter(s -> !isMultiple(s, modulus)).orElse(replacement);
+    }
+
+    static boolean isMultiple(String intStr, int modulus) {
+        return isInt(intStr) && Integer.parseInt(intStr) % modulus == 0;
+    }
+
+    static boolean isInt(String s) {
+        return s.matches("[0-9]+");
     }
 }
